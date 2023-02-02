@@ -10,6 +10,7 @@ import {
   Paper,
 } from "@mui/material";
 import { TablePaginationActions } from "./TablePaginationActions/TablePaginationAction";
+import ErrorDisplay from "../ErrorDisplay/ErrorDisplay";
 
 interface Props {
   page: number;
@@ -32,24 +33,31 @@ export default function ColorsTable(props: Props) {
   ) => {
     setPage(newPage);
   };
-  const emptyRowsNumber = rowsPerPage - rows.length;
+  const emptyRowsNumber =
+    rows === "server-error" || rows === "bad-request"
+      ? rowsPerPage - 1
+      : rowsPerPage - rows.length;
   return (
     <TableContainer component={Paper}>
       <Table aria-label="table">
         <TableHead>
           <TableRow>
-            <TableCell align="right">Id</TableCell>
+            <TableCell>ID</TableCell>
             <TableCell>Color name</TableCell>
             <TableCell align="right">Year</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row: IRow) => (
-            <Row key={row.id} id={row.id} row={row} onClick={handleOpen} />
-          ))}
+          {rows === "server-error" || rows === "bad-request" ? (
+            <ErrorDisplay errorMessage={rows} />
+          ) : (
+            rows.map((row: IRow) => (
+              <Row key={row.id} id={row.id} row={row} onClick={handleOpen} />
+            ))
+          )}
           {emptyRowsNumber > 0 && (
-            <TableRow style={{ height: 53 * emptyRowsNumber }}>
-              <TableCell colSpan={6} />
+            <TableRow style={{ height: 52 * emptyRowsNumber }}>
+              <TableCell colSpan={3} />
             </TableRow>
           )}
         </TableBody>
@@ -59,6 +67,7 @@ export default function ColorsTable(props: Props) {
               page={page}
               onPageChange={handleChangePage}
               totalPages={totalPages}
+              colSpan={3}
             />
           </TableRow>
         </TableFooter>

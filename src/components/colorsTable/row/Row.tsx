@@ -23,16 +23,16 @@ export default function Row(props: Props) {
       onClick={onClick}
       sx={{
         "& > *": {
-          borderBottom: "unset",
+          borderBottom: 0,
           backgroundColor: row.color,
           cursor: "pointer",
         },
       }}
     >
-      <TableCell component="th" scope="row" align="right">
+      <TableCell component="th" scope="row">
         {row.id}
       </TableCell>
-      <TableCell>{row.name}</TableCell>
+      <TableCell>{row.name.toUpperCase()}</TableCell>
       <TableCell align="right">{row.year}</TableCell>
     </TableRow>
   );

@@ -16,7 +16,7 @@ export default function ColorModal(props: Props) {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: 300,
     bgcolor: activeRow?.color,
     border: "2px solid #000",
     boxShadow: 24,
@@ -31,20 +31,25 @@ export default function ColorModal(props: Props) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          name: {activeRow?.name}
+        <Typography
+          id="modal-modal-title"
+          variant="h4"
+          component="h2"
+          sx={{ textAlign: "center" }}
+        >
+          {activeRow?.name.toUpperCase()}
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          id: {activeRow?.id}
+          Id: {activeRow?.id}
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          color: {activeRow?.color}
+          Hex value: {activeRow?.color}
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          pantone_value: {activeRow?.pantone_value}
+          Pantone value: {activeRow?.pantone_value}
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          year: {activeRow?.year}
+          Year: {activeRow?.year}
         </Typography>
       </Box>
     </Modal>

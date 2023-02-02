@@ -3,10 +3,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import ColorsTable from "./components/colorsTable/ColorsTable";
 import fetchProducts from "./utility/fetchProducts";
+import fetchProduct from "./utility/fetchProduct";
 import ColorModal from "./components/modal/Modal";
 import { IRow } from "./components/colorsTable/row/Row";
 import Loading from "./components/Loading/Loading";
-import ErrorDisplay from "./components/ErrorDisplay/ErrorDisplay";
 
 export default function App() {
   const [rows, setRows] = useState<
@@ -15,13 +15,23 @@ export default function App() {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [activeRow, setActiveRow] = React.useState<IRow | undefined>();
+  const [chosenId, setChosenId] = React.useState(0);
 
   const rowsPerPage = 5;
 
-  const getProducts = async () => {
-    const response = await fetchProducts(page + 1);
+  const handleChooseId = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    if (Number(event.target.value) >= 0)
+      setChosenId(Number(event.target.value));
+  };
 
-    setRows(response.data ?? response);
+  const getProducts = async () => {
+    const response = chosenId
+      ? await fetchProduct(chosenId)
+      : await fetchProducts(page + 1);
+
+    setRows(response?.data ?? response);
     setTotalPages(response.total_pages);
   };
 
@@ -44,11 +54,9 @@ export default function App() {
   useEffect(() => {
     getProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
-
+  }, [page, chosenId]);
+  console.log(rows);
   if (rows === "loading") return <Loading />;
-  if (rows === "server-error" || rows === "bad-request")
-    return <ErrorDisplay errorMessage={rows} />;
 
   return (
     <div className="app">
@@ -58,6 +66,9 @@ export default function App() {
         label="Id"
         variant="outlined"
         type="number"
+        value={chosenId}
+        onChange={handleChooseId}
+        sx={{ mb: 3 }}
       />
       <ColorsTable
         page={page}

@@ -1,5 +1,5 @@
 import { KeyboardArrowRight, KeyboardArrowLeft } from "@mui/icons-material";
-import { Box, IconButton, useTheme } from "@mui/material";
+import { IconButton, TableCell, useTheme } from "@mui/material";
 
 interface TablePaginationActionsProps {
   page: number;
@@ -8,6 +8,7 @@ interface TablePaginationActionsProps {
     event: React.MouseEvent<HTMLButtonElement>,
     newPage: number
   ) => void;
+  colSpan: number;
 }
 
 export function TablePaginationActions(props: TablePaginationActionsProps) {
@@ -27,31 +28,29 @@ export function TablePaginationActions(props: TablePaginationActionsProps) {
   };
 
   return (
-    <td>
-      <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-        <IconButton
-          onClick={handleBackButtonClick}
-          disabled={page === 0}
-          aria-label="previous page"
-        >
-          {theme.direction === "rtl" ? (
-            <KeyboardArrowRight />
-          ) : (
-            <KeyboardArrowLeft />
-          )}
-        </IconButton>
-        <IconButton
-          onClick={handleNextButtonClick}
-          disabled={page + 1 === totalPages}
-          aria-label="next page"
-        >
-          {theme.direction === "rtl" ? (
-            <KeyboardArrowLeft />
-          ) : (
-            <KeyboardArrowRight />
-          )}
-        </IconButton>
-      </Box>
-    </td>
+    <TableCell colSpan={3} align="center">
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page + 1 === totalPages}
+        aria-label="next page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </IconButton>
+    </TableCell>
   );
 }
