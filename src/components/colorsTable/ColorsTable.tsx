@@ -1,4 +1,4 @@
-import Row, { IRow } from "./row/Row";
+import Row, { IRow } from "./Row/Row";
 import {
   Table,
   TableBody,
@@ -21,9 +21,18 @@ interface Props {
   handleOpen: (
     event: React.MouseEvent<HTMLTableRowElement, MouseEvent>
   ) => void;
+  queryParameters: URLSearchParams;
 }
 export default function ColorsTable(props: Props) {
-  const { page, setPage, rowsPerPage, totalPages, rows, handleOpen } = props;
+  const {
+    page,
+    setPage,
+    rowsPerPage,
+    totalPages,
+    rows,
+    handleOpen,
+    queryParameters,
+  } = props;
   if (rows === "loading") return <></>;
   // Avoid a layout jump when reaching the last page with empty rows.
 
@@ -32,6 +41,12 @@ export default function ColorsTable(props: Props) {
     newPage: number
   ) => {
     setPage(newPage);
+    queryParameters.set("page", String(newPage + 1));
+    queryParameters.delete("id");
+    const newRelativePathQuery = `${
+      window.location.pathname
+    }?${queryParameters.toString()}`;
+    window.history.pushState(null, "", newRelativePathQuery);
   };
   const emptyRowsNumber =
     rows === "server-error" || rows === "bad-request"

@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { IRow } from "../colorsTable/row/Row";
+import { IRow } from "../colorsTable/Row/Row";
 
 interface Props {
   onClose: () => void;
